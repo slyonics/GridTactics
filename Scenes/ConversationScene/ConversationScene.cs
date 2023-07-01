@@ -124,7 +124,7 @@ namespace GridTactics.Scenes.ConversationScene
             {
                 base.BeginScene();
 
-                Audio.PlayMusic(GameMusic.Intro);
+                // Audio.PlayMusic(GameMusic.Intro);
             }
         }
 

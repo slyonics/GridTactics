@@ -91,7 +91,27 @@ namespace GridTactics.Main
         Pokedex,
         Up,
         UpSelected,
+        Actors_animals1,
+        Actors_animation1,
+        Actors_animation2,
         Actors_Blank,
+        Actors_bonus1,
+        Actors_chara2,
+        Actors_chara3,
+        Actors_chara4,
+        Actors_chara5,
+        Actors_chests,
+        Actors_emote2,
+        Actors_emote3,
+        Actors_emote4,
+        Actors_emote5,
+        Actors_military1,
+        Actors_military2,
+        Actors_military3,
+        Actors_npc1,
+        Actors_npc2,
+        Actors_npc3,
+        Actors_npc4,
         Background_Blank,
         Background_Splash,
         Particles_Acid,
@@ -213,6 +233,14 @@ namespace GridTactics.Main
 
     public enum GameMap
     {
+        Foyer,
+        Tilesets_Castle,
+        Tilesets_Dungeon,
+        Tilesets_House,
+        Tilesets_Inside,
+        Tilesets_Outside,
+        Tilesets_Terrain,
+        Tilesets_Water,
 
         None = -1
     }

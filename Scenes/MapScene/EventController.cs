@@ -2,6 +2,7 @@
 using GridTactics.SceneObjects.Controllers;
 using GridTactics.SceneObjects.Maps;
 using GridTactics.SceneObjects.Shaders;
+using GridTactics.Scenes.ConversationScene;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +33,8 @@ namespace GridTactics.Scenes.MapScene
                 case "SetWaypoint": SetWaypoint(tokens); break;
                 case "Conversation": Conversation(tokens, scriptParser); break;
                 case "Encounter": Encounter(tokens, scriptParser, mapScene); break;
-                case "Shop": Shop(tokens); break;
                 case "GiveItem": GiveItem(tokens); break;
                 case "Inn": Inn(tokens); break;
-                case "RestoreParty": RestoreParty(); break;
 
                 default: return false;
             }
@@ -96,6 +95,7 @@ namespace GridTactics.Scenes.MapScene
 
         public static void Encounter(string[] tokens, ScriptParser scriptParser, MapScene scene)
         {
+            /*
             var unblock = new TerminationFollowup(scriptParser.BlockScript());
             BattleScene.BattleScene battleScene = null;
 
@@ -116,17 +116,12 @@ namespace GridTactics.Scenes.MapScene
                 pinwheel.Terminate();
                 CrossPlatformGame.StackScene(battleScene, true);
             });
-        }
-
-        public void Shop(string[] tokens)
-        {
-            ShopScene.ShopScene shopScene = new ShopScene.ShopScene(tokens[1]);
-            shopScene.OnTerminated += new TerminationFollowup(scriptParser.BlockScript());
-            CrossPlatformGame.StackScene(shopScene);
+            */
         }
 
         public void GiveItem(string[] tokens)
         {
+            /*
             ItemRecord item = new ItemRecord(StatusScene.StatusScene.ITEMS.First(x => x.Name == string.Join(' ', tokens.Skip(1))));
             GameProfile.Inventory.Add(new ItemModel(item, 1));
 
@@ -143,6 +138,7 @@ namespace GridTactics.Scenes.MapScene
             CrossPlatformGame.StackScene(conversationScene);
 
             Audio.PlaySound(GameSound.GetItem);
+            */
         }
 
         public void Inn(string[] tokens)
@@ -173,18 +169,7 @@ namespace GridTactics.Scenes.MapScene
             mapScene.AddController(transitionOutController);
             mapScene.SceneShader = colorFadeOut;
 
-            RestoreParty();
-        }
-
-        public static void RestoreParty()
-        {
-            foreach (var partyMember in GameProfile.PlayerProfile.ActiveRoster)
-            {
-                partyMember.Value.CurrentHealth.Value = partyMember.Value.Health.Value;
-                partyMember.Value.Status.Value = StatusAilment.None;
-                foreach (var ability in partyMember.Value.Techniques) ability.Value.ChargesLeft = ability.Value.MaxCharges;
-                foreach (var ability in partyMember.Value.Repertoire) ability.Value.ChargesLeft = ability.Value.MaxCharges;
-            }
+            // RestoreParty();
         }
     }
 }

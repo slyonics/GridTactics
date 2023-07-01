@@ -43,6 +43,7 @@ namespace GridTactics.Scenes.MapScene
 
             if (Input.CurrentInput.CommandPressed(Command.Cancel))
             {
+                /*
                 Controller suspendController = mapScene.AddController(new Controller(PriorityLevel.MenuLevel));
 
                 StatusScene.StatusScene statusScene = new StatusScene.StatusScene();
@@ -50,6 +51,7 @@ namespace GridTactics.Scenes.MapScene
                 CrossPlatformGame.StackScene(statusScene);
 
                 return;
+                */
             }
 
             Vector2 movement = Vector2.Zero;

@@ -26,6 +26,9 @@ namespace GridTactics.Models
             { "NewPlayer", true }
         };
 
+        private static int worldTime;
+        public static int WorldTime { get => worldTime; set => worldTime = value; }
+
         private static int saveSlot;
         public static int SaveSlot { get => saveSlot; set => saveSlot = value; }
 

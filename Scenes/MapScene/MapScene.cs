@@ -2,8 +2,6 @@
 using GridTactics.Models;
 using GridTactics.SceneObjects.Maps;
 using GridTactics.SceneObjects.Shaders;
-using GridTactics.Scenes.BattleScene;
-using GridTactics.Scenes.StatusScene;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -27,7 +25,6 @@ namespace GridTactics.Scenes.MapScene
         public Hero PartyLeader { get => Party.FirstOrDefault(); }
 
         public List<Npc> NPCs { get; private set; } = new List<Npc>();
-        public List<Encounter> Encounters { get; private set; } = new List<Encounter>();
         public List<EventTrigger> EventTriggers { get; private set; } = new List<EventTrigger>();
 
         private ParallaxBackdrop parallaxBackdrop;
@@ -62,9 +59,11 @@ namespace GridTactics.Scenes.MapScene
 
             Camera = new Camera(new Rectangle(0, 0, Tilemap.Width, Tilemap.Height));
             Tilemap.ClearFieldOfView();
-
+            
+            /*
             var leaderHero = new Hero(this, Tilemap, new Vector2(32, 96), 0, GameProfile.PlayerProfile.PlayerSprite.Value);
             Party.Add(leaderHero);
+            */
 
             // add followers
 
@@ -105,13 +104,6 @@ namespace GridTactics.Scenes.MapScene
                             {
                                 Rectangle zone = new Rectangle((int)tiledObject.x, (int)tiledObject.y, (int)tiledObject.width, (int)tiledObject.height);
                                 musicZones.Add(new Tuple<Rectangle, string>(zone, tiledObject.name));
-                            }
-                            break;
-
-                        case "Encounters":
-                            {
-                                Encounter encounter = new Encounter(this, Tilemap, tiledObject);
-                                Encounters.Add(encounter);
                             }
                             break;
                     }
@@ -225,7 +217,7 @@ namespace GridTactics.Scenes.MapScene
 
         public static void Initialize()
         {
-            ENCOUNTER_TABLES = AssetCache.LoadRecords<EncounterTable>("EncounterTables");
+
         }
 
         public override void BeginScene()
