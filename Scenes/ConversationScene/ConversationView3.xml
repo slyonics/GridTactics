@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<View>
+
+	<Panel Anchor="$CenterX,$CenterY" Bounds="Bind Window" InnerMargin="8,4,8,8">
+		<CrawlText Name="ConversationText" Text="Bind Dialogue" Font="Bind ConversationFont" Alignment="Stretch" Color="#D8D8D8FF"/>
+		<Textplate Name="SpeakerPlate" Style="SmallConvo" Alignment="BottomLeft" Bounds="8,-73,-1,-1" InnerMargin="9,2,7,8" Font="Bind ConversationFont" Text="Bind Speaker" Color="#E0BFA2FF"/>
+	</Panel>
+  
+</View>

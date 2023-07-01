@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<View>
+	<Panel Style="PokeFrame" Anchor="$CenterX,$CenterY" Bounds="Bind WindowSize" TransitionIn="Expand" TransitionOut="Shrink">
+		<Panel Visible="Bind ShowMoney" Style="PokeFrame" Bounds="-20,-62,60,20" InnerMargin="4,6,4,4">
+			<Label Text="Coins:" Alignment="Stretch" TextAlignment="Left"/>
+			<Label Text="Bind PlayerProfile.Money" Bounds="0,0,0,10" Alignment="Stretch" TextAlignment="Right"/>
+		</Panel>
+
+		<DataGrid Name="OptionsList" Items="Bind AvailableOptions" Alignment="Stretch" InnerMargin="0,3,0,0" Scrolling="False">
+			<Button Radio="True" Style="Blank" PushedStyle="LabelGlow" Bounds="Bind ButtonSize" Alignment="Vertical" Action="SelectOption" ActionParameter="Ref DataGrid" InnerMargin="2,2,2,2">
+				<Label Text="Ref DataGrid" Font="Dialogue" Bounds="Bind LabelSize" Alignment="Center" Color="#FFFFFFFF"/>
+			</Button>
+		</DataGrid>
+	</Panel>  
+</View>

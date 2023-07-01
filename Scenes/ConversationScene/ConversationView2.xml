@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<View>
+
+	<Panel Anchor="$CenterX,$CenterY" Bounds="Bind Window" InnerMargin="8,4,8,8">
+		<CrawlText Name="ConversationText" Text="Bind Dialogue" Font="Bind ConversationFont" Alignment="Stretch" Color="#080808FF"/>
+		<Textplate Name="SpeakerPlate" Style="SmallConvo" Alignment="BottomLeft" Bounds="8,-73,-1,-1" InnerMargin="9,2,7,8" Font="Bind ConversationFont" Text="Bind Speaker" Color="#E0BFA2FF"/>
+		<Image Sprite="Enter,0,0,11,13,2,1200,-1" Alignment="BottomRight" Bounds="7,7,11,13" Visible="Bind ReadyToProceed"/>
+	</Panel>
+  
+</View>
