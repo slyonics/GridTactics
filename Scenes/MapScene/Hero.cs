@@ -27,8 +27,8 @@ namespace GridTactics.Scenes.MapScene
             RunUp
         }
 
-        public const int HERO_WIDTH = 20;
-        public const int HERO_HEIGHT = 24;
+        public const int HERO_WIDTH = 26;
+        public const int HERO_HEIGHT = 36;
 
         public static readonly Rectangle HERO_BOUNDS = new Rectangle(-8, -15, 16, 16);
 

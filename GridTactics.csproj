@@ -103,6 +103,6 @@
     <Exec Command="$(SolutionDir)Assets\JamPacker.exe Pack $(SolutionDir)Assets $(TargetDir)" />
   </Target>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(SolutionDir)Assets\JamPacker.exe Enumerate $(SolutionDir)Assets $(TargetDir) Ponsona" />
+    <Exec Command="$(SolutionDir)Assets\JamPacker.exe Enumerate $(SolutionDir)Assets $(TargetDir)" />
   </Target>
 </Project>

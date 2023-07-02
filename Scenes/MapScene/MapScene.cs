@@ -44,7 +44,7 @@ namespace GridTactics.Scenes.MapScene
             {
                 switch (tiledProperty.name)
                 {
-                    case "Music": if (!GameProfile.GetSaveData<bool>("NewGame")) Audio.PlayMusic((GameMusic)Enum.Parse(typeof(GameMusic), tiledProperty.value)); else Audio.StopMusic(); break;
+                    case "Music": Audio.PlayMusic((GameMusic)Enum.Parse(typeof(GameMusic), tiledProperty.value)); break;
                     case "Script": AddController(new EventController(this, tiledProperty.value.Split('\n'))); break;
 
                     case "ColorFilter": SceneShader = new SceneObjects.Shaders.ColorFade(Graphics.ParseHexcode("#" + tiledProperty.value.Substring(3)), 0.75f); break;
@@ -55,15 +55,11 @@ namespace GridTactics.Scenes.MapScene
                 }
             }
 
-            if (GameProfile.GetSaveData<bool>("NewGame")) SceneShader = new SceneObjects.Shaders.DayNight(Color.Black, 1.0f);
-
             Camera = new Camera(new Rectangle(0, 0, Tilemap.Width, Tilemap.Height));
             Tilemap.ClearFieldOfView();
             
-            /*
-            var leaderHero = new Hero(this, Tilemap, new Vector2(32, 96), 0, GameProfile.PlayerProfile.PlayerSprite.Value);
+            var leaderHero = new Hero(this, Tilemap, new Vector2(37 * 16, 34 * 16), 0, GameSprite.Actors_Thief);
             Party.Add(leaderHero);
-            */
 
             // add followers
 
@@ -117,8 +113,7 @@ namespace GridTactics.Scenes.MapScene
                 AddController(WeatherController);
                 WeatherController.PreUpdate(new GameTime());
 
-                if (GameProfile.GetSaveData<bool>("NewGame")) WeatherController.AmbientLight = new Color(0, 0, 0, 255);
-                else if (!WeatherController.Indoors) dayNight.Ambient = WeatherController.AmbientLight.ToVector4();
+                if (!WeatherController.Indoors) dayNight.Ambient = WeatherController.AmbientLight.ToVector4();
                 else WeatherController.AmbientLight = mapColor;
             }
         }

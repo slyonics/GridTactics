@@ -21,8 +21,8 @@ namespace GridTactics.Main
         public static readonly string SETTINGS_DIRECTORY = Path.Combine(Environment.ExpandEnvironmentVariables("%userprofile%"), "AppData\\Local") + "\\" + CrossPlatformGame.GAME_NAME;
 
         private const int WINDOWED_MARGIN = 34;
-        private const int TARGET_SCREEN_WIDTH = 256;
-        private const int TARGET_SCREEN_HEIGHT = 160;
+        private const int TARGET_SCREEN_WIDTH = 320;
+        private const int TARGET_SCREEN_HEIGHT = 240;
         private const int MAXIMUM_SCREEN_WIDTH = 1920;
         private const int MAXIMUM_SCREEN_HEIGHT = 1080;
 
