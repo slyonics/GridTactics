@@ -242,9 +242,9 @@ namespace GridTactics.Scenes.MapScene
 
             parallaxBackdrop?.Update(gameTime, Camera);
 
-            if (!ControllerStack.Any(x => x.Any(y => y is CaterpillarController)))
+            if (!ControllerStack.Any(x => x.Any(y => y is PlayerController)))
             {
-                AddController(new CaterpillarController(this));
+                AddController(new PlayerController(this, PartyLeader));
             }
         }
 

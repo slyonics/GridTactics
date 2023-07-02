@@ -30,7 +30,7 @@ namespace GridTactics.Scenes.MapScene
         public const int HERO_WIDTH = 26;
         public const int HERO_HEIGHT = 36;
 
-        public static readonly Rectangle HERO_BOUNDS = new Rectangle(-8, -15, 16, 16);
+        public static readonly Rectangle HERO_BOUNDS = new Rectangle(-7, -8, 13, 7);
 
         private static readonly Dictionary<string, Animation> HERO_ANIMATIONS = new Dictionary<string, Animation>()
         {

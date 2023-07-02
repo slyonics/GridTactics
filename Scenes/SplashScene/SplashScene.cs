@@ -36,7 +36,8 @@ namespace GridTactics.Scenes.SplashScene
 
         public void Notify(SkippableWaitController sender)
         {
-            CrossPlatformGame.Transition(typeof(MapScene.MapScene), "Foyer");
+            GameProfile.NewState();
+            CrossPlatformGame.Transition(typeof(MapScene.MapScene), "Foyer", "Surface");
         }
 
 

@@ -102,6 +102,9 @@ namespace GridTactics.Scenes.MapScene
             }
 
             FindInteractables();
+
+            mapScene.Tilemap.ClearFieldOfView();
+            mapScene.Tilemap.CalculateFieldOfView(mapScene.Tilemap.GetTile(Player.Center - new Vector2(0, 8)), MapScene.SIGHT_RANGE);
         }
 
         private void FindInteractables()

@@ -51,7 +51,8 @@ namespace GridTactics.Main
             { Command.Confirm, new List<Keys>() { Keys.Enter, Keys.Space } },
             { Command.Cancel, new List<Keys>() { Keys.Escape } },
             { Command.Menu, new List<Keys>() { Keys.Escape } },
-            { Command.Interact, new List<Keys>() { Keys.Enter, Keys.Space } }
+            { Command.Interact, new List<Keys>() { Keys.Enter, Keys.Space } },
+            { Command.Run, new List<Keys>() { Keys.LeftShift, Keys.RightShift } }
         };
 
         private static Dictionary<Command, List<Buttons>> MANDATORY_GAMEPAD_BINDINGS = new Dictionary<Command, List<Buttons>>()
