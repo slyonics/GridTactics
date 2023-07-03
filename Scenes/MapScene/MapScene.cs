@@ -25,6 +25,7 @@ namespace GridTactics.Scenes.MapScene
         public Hero PartyLeader { get => Party.FirstOrDefault(); }
 
         public List<Npc> NPCs { get; private set; } = new List<Npc>();
+        public List<Guard> Guards { get; private set; } = new List<Guard>();
         public List<EventTrigger> EventTriggers { get; private set; } = new List<EventTrigger>();
 
         private ParallaxBackdrop parallaxBackdrop;
@@ -91,6 +92,16 @@ namespace GridTactics.Scenes.MapScene
                                 Npc npc = new Npc(this, Tilemap, tiledObject, "Base");
                                 NpcController npcController = new NpcController(this, npc);
                                 NPCs.Add(npc);
+                                AddEntity(npc);
+                                AddController(npcController);
+                            }
+                            break;
+
+                        case "Guards":
+                            {
+                                Guard npc = new Guard(this, Tilemap, tiledObject, "Base");
+                                GuardController npcController = new GuardController(this, npc);
+                                Guards.Add(npc);
                                 AddEntity(npc);
                                 AddController(npcController);
                             }
@@ -239,6 +250,7 @@ namespace GridTactics.Scenes.MapScene
             
 
             NPCs.RemoveAll(x => x.Terminated);
+            Guards.RemoveAll(x => x.Terminated);
 
             parallaxBackdrop?.Update(gameTime, Camera);
 

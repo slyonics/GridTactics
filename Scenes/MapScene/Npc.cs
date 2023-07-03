@@ -23,10 +23,10 @@ namespace GridTactics.Scenes.MapScene
             WalkUp
         }
 
-        public const int NPC_WIDTH = 20;
-        public const int NPC_HEIGHT = 24;
+        public const int NPC_WIDTH = 26;
+        public const int NPC_HEIGHT = 36;
 
-        public static readonly Rectangle NPC_BOUNDS = new Rectangle(-7, -8, 13, 6);
+        public static readonly Rectangle NPC_BOUNDS = new Rectangle(-7, -8, 13, 7);
 
         private static readonly Dictionary<string, Animation> NPC_ANIMATIONS = new Dictionary<string, Animation>()
         {

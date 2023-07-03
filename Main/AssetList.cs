@@ -105,6 +105,7 @@ namespace GridTactics.Main
         Actors_emote3,
         Actors_emote4,
         Actors_emote5,
+        Actors_Guard,
         Actors_military1,
         Actors_military2,
         Actors_military3,
