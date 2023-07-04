@@ -43,10 +43,10 @@ namespace GridTactics.SceneObjects.Maps
             pathingTask.Start();
         }
 
-        public PathingController(PriorityLevel iPriorityLevel, Tilemap iMapScene, Actor iActor, Actor iDestination, float iWalkSpeed, int searchLimit = DEFAULT_SEARCH_LIMIT)
+        public PathingController(PriorityLevel iPriorityLevel, Tilemap iTilemap, Actor iActor, Actor iDestination, float iWalkSpeed, int searchLimit = DEFAULT_SEARCH_LIMIT)
             : base(iPriorityLevel)
         {
-            tilemap = iMapScene;
+            tilemap = iTilemap;
             actor = iActor;
             destinationNode = tilemap.GetNavNode(actor, iDestination);
             if (destinationNode == null) destinationPoint = iDestination.Center;

@@ -26,6 +26,7 @@ namespace GridTactics.Scenes.MapScene
 
         public List<Npc> NPCs { get; private set; } = new List<Npc>();
         public List<Guard> Guards { get; private set; } = new List<Guard>();
+        public List<Vector2> Waypoints { get; private set; } = new List<Vector2>();
         public List<EventTrigger> EventTriggers { get; private set; } = new List<EventTrigger>();
 
         private ParallaxBackdrop parallaxBackdrop;
@@ -84,6 +85,12 @@ namespace GridTactics.Scenes.MapScene
                         case "Triggers":
                             {
                                 EventTriggers.Add(new EventTrigger(this, tiledObject));
+                            }
+                            break;
+
+                        case "Waypoints":
+                            {
+                                Waypoints.Add(new Vector2(tiledObject.x, tiledObject.y));
                             }
                             break;
 

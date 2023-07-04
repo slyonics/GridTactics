@@ -21,6 +21,12 @@ namespace GridTactics.Scenes.MapScene
         private float currentWalkLength;
         private float walkTimeLeft;
 
+        private Controller activeController;
+
+        private Dictionary<string, Vector2> patrolRoute;
+        private string destinationWaypoint;
+
+
         public GuardController(MapScene iScene, Guard iNpc)
             : base(iScene, iNpc.Behavior, PriorityLevel.GameLevel)
         {
@@ -32,6 +38,12 @@ namespace GridTactics.Scenes.MapScene
 
         public override void PreUpdate(GameTime gameTime)
         {
+            if (activeController != null)
+            {
+                if (activeController.Terminated) activeController = null;
+                return;
+            }
+
             if (!scriptParser.Finished && destinationTile == null) base.PreUpdate(gameTime);
 
             if (destinationTile == null)
@@ -49,6 +61,12 @@ namespace GridTactics.Scenes.MapScene
 
         public override void PostUpdate(GameTime gameTime)
         {
+            if (activeController != null)
+            {
+                if (activeController.Terminated) activeController = null;
+                return;
+            }
+
             if (destinationTile != null)
             {
                 walkTimeLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -111,12 +129,27 @@ namespace GridTactics.Scenes.MapScene
             }
         }
 
+        public void Patrol(IEnumerable<string> waypoints)
+        {
+            patrolRoute = new List<string>(waypoints);
+            ResumePatrol();
+        }
+
+        private void ResumePatrol()
+        {
+            Vector2 closestWaypoint = mapScene
+
+            PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, new Vector2(403, 371), 30);
+            activeController = mapScene.AddController(pathingController);
+        }
+
         public override bool ExecuteCommand(string[] tokens)
         {
             switch (tokens[0])
             {
                 case "Wander": Move((Orientation)Rng.RandomInt(0, 3), int.Parse(tokens[1]) / 1000.0f); break;
                 case "Turn": Turn(tokens[1] == "CW"); break;
+                case "Patrol": Patrol(tokens.Skip(1)); break;
                 default: return false;
             }
 
