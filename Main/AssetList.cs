@@ -240,6 +240,7 @@ namespace GridTactics.Main
     public enum GameMap
     {
         Foyer,
+        Outside,
         Tilesets_Castle,
         Tilesets_Dungeon,
         Tilesets_House,
