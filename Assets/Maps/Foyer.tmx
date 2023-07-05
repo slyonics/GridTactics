@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="8">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="8">
  <properties>
   <property name="LocationName" value="Foyer"/>
  </properties>
@@ -177,9 +177,7 @@
  <objectgroup id="4" name="Guards">
   <object id="6" name="Guard" x="720" y="256" width="8" height="8">
    <properties>
-    <property name="Behavior">Patrol A B C D
-Wait 250
-Repeat</property>
+    <property name="Behavior" value="Patrol A B C D"/>
     <property name="Direction" value="Down"/>
     <property name="Interact" value="Conversation MomTalk"/>
     <property name="Label" value="Guard"/>

@@ -113,6 +113,7 @@ namespace GridTactics.Main
         Actors_npc2,
         Actors_npc3,
         Actors_npc4,
+        Actors_Sidekick,
         Actors_Thief,
         Background_Blank,
         Background_Splash,

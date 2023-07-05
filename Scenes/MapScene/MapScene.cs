@@ -26,7 +26,7 @@ namespace GridTactics.Scenes.MapScene
 
         public List<Npc> NPCs { get; private set; } = new List<Npc>();
         public List<Guard> Guards { get; private set; } = new List<Guard>();
-        public List<Vector2> Waypoints { get; private set; } = new List<Vector2>();
+        public Dictionary<string, Vector2> Waypoints { get; private set; } = new Dictionary<string, Vector2>();
         public List<EventTrigger> EventTriggers { get; private set; } = new List<EventTrigger>();
 
         private ParallaxBackdrop parallaxBackdrop;
@@ -64,6 +64,9 @@ namespace GridTactics.Scenes.MapScene
             Party.Add(leaderHero);
 
             // add followers
+            Hero follower = new Hero(this, Tilemap, new Vector2(38 * 16, 34 * 16), 0, GameSprite.Actors_Sidekick);
+            Party.Add(follower);
+            AddController(new FollowerController(this, follower, leaderHero));
 
             foreach (var partymember in Party.Reverse<Hero>())
             {
@@ -90,7 +93,7 @@ namespace GridTactics.Scenes.MapScene
 
                         case "Waypoints":
                             {
-                                Waypoints.Add(new Vector2(tiledObject.x, tiledObject.y));
+                                Waypoints.Add(tiledObject.name, new Vector2(tiledObject.x, tiledObject.y));
                             }
                             break;
 

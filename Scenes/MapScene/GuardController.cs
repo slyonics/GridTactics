@@ -4,6 +4,7 @@ using GridTactics.SceneObjects.Maps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,9 +22,10 @@ namespace GridTactics.Scenes.MapScene
         private float currentWalkLength;
         private float walkTimeLeft;
 
-        private Controller activeController;
+        private PathingController activeController;
 
-        private Dictionary<string, Vector2> patrolRoute;
+        private List<string> patrolRoute;
+        private string currentWaypoint;
         private string destinationWaypoint;
 
 
@@ -40,7 +42,24 @@ namespace GridTactics.Scenes.MapScene
         {
             if (activeController != null)
             {
-                if (activeController.Terminated) activeController = null;
+                if (activeController.Terminated)
+                {
+                    activeController = null;
+
+                    if (patrolRoute != null)
+                    {
+                        currentWaypoint = destinationWaypoint;
+                        int index = patrolRoute.IndexOf(currentWaypoint);
+                        int nextIndex = index + 1;
+                        if (nextIndex >= patrolRoute.Count) nextIndex = 0;
+                        destinationWaypoint = patrolRoute[nextIndex];
+
+                        PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.Waypoints[destinationWaypoint], 30);
+                        activeController = mapScene.AddController(pathingController);
+
+                    }
+                }
+
                 return;
             }
 
@@ -61,12 +80,6 @@ namespace GridTactics.Scenes.MapScene
 
         public override void PostUpdate(GameTime gameTime)
         {
-            if (activeController != null)
-            {
-                if (activeController.Terminated) activeController = null;
-                return;
-            }
-
             if (destinationTile != null)
             {
                 walkTimeLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -131,15 +144,21 @@ namespace GridTactics.Scenes.MapScene
 
         public void Patrol(IEnumerable<string> waypoints)
         {
-            patrolRoute = new List<string>(waypoints);
+            patrolRoute = waypoints.ToList();
+            
             ResumePatrol();
         }
 
         private void ResumePatrol()
         {
-            Vector2 closestWaypoint = mapScene
+            currentWaypoint = mapScene.Waypoints.OrderBy(x => Vector2.Distance(x.Value, npc.Center)).First().Key;
 
-            PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, new Vector2(403, 371), 30);
+            int index = patrolRoute.IndexOf(currentWaypoint);
+            int nextIndex = index++;
+            if (nextIndex >= patrolRoute.Count) nextIndex = 0;
+            destinationWaypoint = patrolRoute[nextIndex];
+
+            PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.Waypoints[destinationWaypoint], 30);
             activeController = mapScene.AddController(pathingController);
         }
 
