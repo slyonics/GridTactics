@@ -1,0 +1,11 @@
+﻿[
+  {
+    "Name": "GameIntro",
+    "DialogueRecords": [
+      {
+        "Speaker": "Test",
+        "Text": "Test conversation"
+      }
+    ]
+  }
+]

@@ -37,7 +37,10 @@ namespace GridTactics.Scenes.SplashScene
         public void Notify(SkippableWaitController sender)
         {
             GameProfile.NewState();
-            CrossPlatformGame.Transition(typeof(MapScene.MapScene), "Foyer", "Surface");
+            GameProfile.SetSaveData<bool>("NewGame", true);
+
+            CrossPlatformGame.Transition(typeof(MapScene.MapScene), "Foyer", "Outside");
+
         }
 
 

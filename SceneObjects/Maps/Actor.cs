@@ -338,6 +338,8 @@ namespace GridTactics.SceneObjects.Maps
 
         public virtual void Idle()
         {
+            Running = false;
+
             desiredVelocity = Vector2.Zero;
 
             animatedSprite.PlayAnimation("Idle" + orientation.ToString());
@@ -345,6 +347,8 @@ namespace GridTactics.SceneObjects.Maps
 
         public virtual void Walk(Vector2 movement, float walkSpeed)
         {
+            Running = false;
+
             desiredVelocity = movement * walkSpeed;
 
             Reorient(movement);
@@ -354,6 +358,8 @@ namespace GridTactics.SceneObjects.Maps
 
         public virtual void Run(Vector2 movement, float runSpeed)
         {
+            Running = true;
+
             desiredVelocity = movement * runSpeed;
 
             Reorient(movement);
@@ -436,5 +442,7 @@ namespace GridTactics.SceneObjects.Maps
                 }
             }
         }
+
+        public bool Running { get; set; }
     }
 }

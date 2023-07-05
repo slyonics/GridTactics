@@ -60,6 +60,7 @@ namespace GridTactics.Main
 
     public enum GameData
     {
+        ConversationData,
 
         None = -1
     }
@@ -122,12 +123,14 @@ namespace GridTactics.Main
         Particles_Bite,
         Particles_Bubble,
         Particles_Electric,
+        Particles_Exclamation,
         Particles_Fireblast,
         Particles_Flame,
         Particles_Heal,
         Particles_Impact,
         Particles_Lightning,
         Particles_PoisonSpike,
+        Particles_Question,
         Particles_Rock,
         Particles_Scratch,
         Particles_Shadow,

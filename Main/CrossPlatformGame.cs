@@ -3,6 +3,7 @@ global using GridTactics.SceneObjects;
 global using Microsoft.Xna.Framework;
 using GridTactics.SceneObjects.Controllers;
 using GridTactics.SceneObjects.Shaders;
+using GridTactics.Scenes.ConversationScene;
 using GridTactics.Scenes.SplashScene;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -80,6 +81,8 @@ namespace GridTactics.Main
 
             PokeRng.Seed(42069);
             AssetCache.LoadContent(Content, GraphicsDevice);
+
+            ConversationScene.Initialize();
 
             CurrentScene = new SplashScene();
         }

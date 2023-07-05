@@ -1,6 +1,7 @@
 ﻿using GridTactics.Models;
 using GridTactics.SceneObjects.Controllers;
 using GridTactics.SceneObjects.Maps;
+using GridTactics.SceneObjects.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,14 @@ namespace GridTactics.Scenes.MapScene
 {
     public class GuardController : ScriptController
     {
+        private enum Awareness
+        {
+            Patrolling,
+            Suspicious,
+            Chasing,
+            Searching
+        }
+
         private const float DEFAULT_WALK_LENGTH = 1.0f / 3;
 
         private MapScene mapScene;
@@ -22,11 +31,18 @@ namespace GridTactics.Scenes.MapScene
         private float currentWalkLength;
         private float walkTimeLeft;
 
-        private PathingController activeController;
+        private Controller activeController;
+        private EmoteParticle emoteParticle;
 
         private List<string> patrolRoute;
         private string currentWaypoint;
         private string destinationWaypoint;
+
+        private Awareness awareness;
+        private int giveUpTimer = 3000;
+        private int detectionTimer = 2000;
+        private int hearingRange = 60;
+        private int sightRange = 120;
 
 
         public GuardController(MapScene iScene, Guard iNpc)
@@ -40,13 +56,15 @@ namespace GridTactics.Scenes.MapScene
 
         public override void PreUpdate(GameTime gameTime)
         {
+            UpdateAwareness(gameTime);
+
             if (activeController != null)
             {
                 if (activeController.Terminated)
                 {
                     activeController = null;
 
-                    if (patrolRoute != null)
+                    if (patrolRoute != null && awareness == Awareness.Patrolling)
                     {
                         currentWaypoint = destinationWaypoint;
                         int index = patrolRoute.IndexOf(currentWaypoint);
@@ -56,8 +74,16 @@ namespace GridTactics.Scenes.MapScene
 
                         PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.Waypoints[destinationWaypoint], 30);
                         activeController = mapScene.AddController(pathingController);
-
                     }
+                    else if (awareness == Awareness.Chasing)
+                    {
+                        PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.PartyLeader.Center, 30);
+                        activeController = mapScene.AddController(pathingController);
+                    }
+                }
+                else
+                {
+
                 }
 
                 return;
@@ -95,6 +121,119 @@ namespace GridTactics.Scenes.MapScene
                     destinationTile = null;
                 }
             }
+        }
+
+        private void UpdateAwareness(GameTime gameTime)
+        {
+            Tile hostTile = mapScene.Tilemap.GetTile(npc.Center);
+
+            switch (awareness)
+            {
+                case Awareness.Patrolling:
+                    if (Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < hearingRange && mapScene.PartyLeader.Running)
+                    {
+                        awareness = Awareness.Suspicious;
+                        giveUpTimer = 3000;
+                        detectionTimer = 2000;
+                        activeController.Terminate();
+                        activeController = null;
+
+                        emoteParticle?.Terminate();
+                        emoteParticle = mapScene.AddParticle(new EmoteParticle(mapScene, npc, EmoteType.Question));
+
+                    }
+                    else if (!hostTile.Obscured)
+                    {
+                        if (Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < sightRange)
+                        {
+                            awareness = Awareness.Suspicious;
+                            giveUpTimer = 3000;
+                            detectionTimer = 2000;
+                            activeController.Terminate();
+                            activeController = null;
+
+                            emoteParticle?.Terminate();
+                            emoteParticle = mapScene.AddParticle(new EmoteParticle(mapScene, npc, EmoteType.Question));
+                        }
+                    }
+                    break;
+
+                case Awareness.Suspicious:
+
+                    if (Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < 40)
+                    {
+                        awareness = Awareness.Chasing;
+                        giveUpTimer = 5000;
+                        PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.PartyLeader.Center, 40);
+                        activeController = mapScene.AddController(pathingController);
+
+                        emoteParticle?.Terminate();
+                        emoteParticle = mapScene.AddParticle(new EmoteParticle(mapScene, npc, EmoteType.Exclamation));
+                    }
+                    else if (Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < hearingRange && mapScene.PartyLeader.Running)
+                    {
+                        detectionTimer -= gameTime.ElapsedGameTime.Milliseconds;
+                        if (detectionTimer <= 0)
+                        {
+                            awareness = Awareness.Chasing;
+                            giveUpTimer = 3000;
+                            PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.PartyLeader.Center, 40);
+                            activeController = mapScene.AddController(pathingController);
+
+                            emoteParticle?.Terminate();
+                            emoteParticle = mapScene.AddParticle(new EmoteParticle(mapScene, npc, EmoteType.Exclamation));
+                        }
+                    }
+                    else if (!hostTile.Obscured && Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < sightRange)
+                    {
+                        detectionTimer -= gameTime.ElapsedGameTime.Milliseconds; if (detectionTimer <= 0)
+                        {
+                            awareness = Awareness.Chasing;
+                            giveUpTimer = 3000;
+                            PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.PartyLeader.Center, 40);
+                            activeController = mapScene.AddController(pathingController);
+
+                            emoteParticle?.Terminate();
+                            emoteParticle = mapScene.AddParticle(new EmoteParticle(mapScene, npc, EmoteType.Exclamation));
+                        }
+                    }
+                    else
+                    {
+                        giveUpTimer -= gameTime.ElapsedGameTime.Milliseconds;
+                        if (giveUpTimer <= 0)
+                        {
+                            awareness = Awareness.Patrolling;
+                            ResumePatrol();
+                        }
+                    }
+                    break;
+
+                case Awareness.Chasing:
+                    if (Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < 40)
+                    {
+                        giveUpTimer = 3000;
+                    }
+                    else if (Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < hearingRange && mapScene.PartyLeader.Running)
+                    {
+                        giveUpTimer = 3000;
+                    }
+                    else if (!hostTile.Obscured && Vector2.Distance(npc.Center, mapScene.PartyLeader.Center) < sightRange)
+                    {
+                        giveUpTimer = 3000;
+                    }
+                    else
+                    {
+                        giveUpTimer -= gameTime.ElapsedGameTime.Milliseconds;
+                        if (giveUpTimer <= 0)
+                        {
+                            awareness = Awareness.Patrolling;
+                            ResumePatrol();
+                        }
+                    }
+                    break;
+            }
+
+            
         }
 
         public bool Move(Orientation direction, float walkLength = DEFAULT_WALK_LENGTH)
@@ -146,10 +285,10 @@ namespace GridTactics.Scenes.MapScene
         {
             patrolRoute = waypoints.ToList();
             
-            ResumePatrol();
+            StartPatrol();
         }
 
-        private void ResumePatrol()
+        private void StartPatrol()
         {
             currentWaypoint = mapScene.Waypoints.OrderBy(x => Vector2.Distance(x.Value, npc.Center)).First().Key;
 
@@ -158,6 +297,12 @@ namespace GridTactics.Scenes.MapScene
             if (nextIndex >= patrolRoute.Count) nextIndex = 0;
             destinationWaypoint = patrolRoute[nextIndex];
 
+            PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.Waypoints[destinationWaypoint], 30);
+            activeController = mapScene.AddController(pathingController);
+        }
+
+        private void ResumePatrol()
+        {
             PathingController pathingController = new PathingController(PriorityLevel.GameLevel, mapScene.Tilemap, npc, mapScene.Waypoints[destinationWaypoint], 30);
             activeController = mapScene.AddController(pathingController);
         }
