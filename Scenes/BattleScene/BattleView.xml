@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<View>
+
+	<Panel Style="Convobox" Anchor="$CenterX,$CenterY" Bounds="-200,60,400,60" InnerMargin="8,4,8,8">
+
+	</Panel>
+  
+</View>

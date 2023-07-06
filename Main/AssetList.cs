@@ -2,6 +2,7 @@ namespace GridTactics.Main
 {
     public enum GameView
     {
+        BattleScene_BattleView,
         ConversationScene_ConversationView,
         ConversationScene_ConversationView2,
         ConversationScene_ConversationView3,
